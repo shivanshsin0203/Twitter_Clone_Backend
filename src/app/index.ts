@@ -3,18 +3,20 @@ import { ApolloServer } from "@apollo/server";
 import {expressMiddleware} from '@apollo/server/express4'
 import bodyParser from "body-parser";
 import e from "express";
-
+import { user } from "./user";
+import { queries } from "./user/queries";
 export async function initServer(){
     const app = express();
     app.use(bodyParser.json());
     const graphQlserver = new ApolloServer({
         typeDefs:`
+        ${user.type}
         type Query{
-            hello:String
+            ${user.queries}
             }`,
         resolvers:{
             Query:{
-                hello:()=> "Hello World"
+               ...user.resolvers.queries
             }
         }
     });
